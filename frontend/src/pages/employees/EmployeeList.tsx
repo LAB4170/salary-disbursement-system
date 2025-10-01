@@ -1,7 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Table, { TableColumn } from "../../components/ui/Table";
+import { useEmployees } from "../../features/employees/hooks/useEmployees";
+import { Employee } from "../../features/employees/types/employee.types";
+
+const columns: TableColumn<Employee>[] = [
+  { key: "name", label: "Name" },
+  { key: "position", label: "Position" },
+  { key: "department", label: "Department" },
+  { key: "employmentType", label: "Type" },
+  { key: "salary", label: "Salary" },
+  {
+    key: "id",
+    label: "Actions",
+    render: (row) => (
+      <Link
+        to={`/employees/${row.id}`}
+        className="text-blue-600 hover:underline text-sm"
+      >
+        View
+      </Link>
+    ),
+  },
+];
 
 const EmployeeList: React.FC = () => {
+  const { employees } = useEmployees();
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -13,10 +37,11 @@ const EmployeeList: React.FC = () => {
           Add Employee
         </Link>
       </div>
-      {/* TODO: Implement employee table */}
-      <div className="bg-white rounded shadow p-4">
-        Employee table coming soon...
-      </div>
+      <Table
+        columns={columns}
+        data={employees}
+        emptyMessage="No employees found."
+      />
     </div>
   );
 };
